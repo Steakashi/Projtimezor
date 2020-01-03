@@ -1,4 +1,4 @@
-#!F:\projtimezor\kivy_venv\Scripts\python.exe
+#!F:\Projtimezor\kivy_venv\Scripts\python.exe
 
 # Author: 
 # Contact: grubert@users.sf.net

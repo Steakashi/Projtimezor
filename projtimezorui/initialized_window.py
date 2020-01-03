@@ -24,23 +24,24 @@ class InitializedScreen(Screen):
 
         self.add_widget(self.main_layout)
 
-    def get_initialized_datetime(self):
-        return self.clock_beginning
-
     def set_parameters(self, parent, project, step):
         label_project = Label(text=project.name)
         label_step = Label(text=step.description)
         self.project_layout.add_widget(label_project)
         self.project_layout.add_widget(label_step)
 
-        button_pause = Button(text='Hello')
+        button_pause = Button(text='Pause')
         button_pause.bind(on_press=parent.pause)
-        self.toolbar_layout.add_widget(Label(text='test 1'))
+        button_resume = Button(text='Resume')
+        button_resume.bind(on_press=parent.resume)
+        self.toolbar_layout.add_widget(button_pause)
+        self.toolbar_layout.add_widget(button_resume)
         self.toolbar_layout.add_widget(Label(text='test 2'))
 
         self.label_time = Label(text='0')
         self.toolbar_layout.add_widget(self.label_time)
-        self.clock_beginning = datetime.datetime.now()
+
+        parent.set_start_clock()
         Clock.schedule_interval(parent.calculate_elapsed_time, .1)
 
     def set_label_elapsed_time(self, hours, minutes, seconds):

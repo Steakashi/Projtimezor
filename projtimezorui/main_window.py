@@ -12,6 +12,10 @@ from projtimezor.constants import START_SCREEN, INITIALIZED_SCREEN
 
 class MainWindow(App):
 
+    clock_beginning = None
+    processing = False
+    last_clocked_saved = None
+
     def __init__(self, parent, **kwargs):
         super(MainWindow, self).__init__(**kwargs)
         self.app = parent
@@ -28,22 +32,32 @@ class MainWindow(App):
     def build(self):
         return self.screen_manager
 
+    def set_start_clock(self):
+        self.clock_beginning = datetime.datetime.now()
+
     def initialize(self, instance):
         self.app.initialize()
         project, step = self.app.get_automatic_project_step()
 
         self.screens[INITIALIZED_SCREEN].set_parameters(self, project, step)
         self.screen_manager.switch_to(self.screens[INITIALIZED_SCREEN])
+        self.resume()
 
-    def pause(self):
+    def pause(self, instance=None):
         self.app.pause()
 
+    def resume(self, instance=None):
+        self.last_clock_saved = datetime.datetime.now()
+        self.app.resume()
+
     def calculate_elapsed_time(self, instance=None):
-        initialized_datetime = self.screens[INITIALIZED_SCREEN].get_initialized_datetime()
-        if datetime.datetime.now() == initialized_datetime:
+        if not self.app.is_processing():
             return
 
-        hours, remainder = divmod((datetime.datetime.now() - initialized_datetime).seconds, 3600)
+        elapsed_time = self.app.register_elapsed_time(datetime.datetime.now() - self.last_clock_saved)
+        hours, remainder = divmod(elapsed_time.seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
         self.screens[INITIALIZED_SCREEN].set_label_elapsed_time(hours, minutes, seconds)
+
+        self.last_clock_saved = datetime.datetime.now()
 

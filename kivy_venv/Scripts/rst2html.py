@@ -1,4 +1,4 @@
-#!F:\projtimezor\kivy_venv\Scripts\python.exe
+#!F:\Projtimezor\kivy_venv\Scripts\python.exe
 
 # $Id: rst2html.py 4564 2006-05-21 20:44:42Z wiemann $
 # Author: David Goodger <goodger@python.org>

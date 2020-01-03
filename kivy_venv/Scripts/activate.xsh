@@ -28,7 +28,7 @@ def _deactivate(args):
 _deactivate(["nondestructive"])
 aliases["deactivate"] = _deactivate
 
-$VIRTUAL_ENV = r"F:\simple-project-time-manager\kivy_venv"
+$VIRTUAL_ENV = r"F:\Projtimezor\kivy_venv"
 
 $_OLD_VIRTUAL_PATH = $PATH
 $PATH = $PATH[:]

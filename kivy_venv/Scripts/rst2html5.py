@@ -1,4 +1,4 @@
-#!F:\projtimezor\kivy_venv\Scripts\python.exe
+#!F:\Projtimezor\kivy_venv\Scripts\python.exe
 # -*- coding: utf8 -*-
 # :Copyright: © 2015 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:

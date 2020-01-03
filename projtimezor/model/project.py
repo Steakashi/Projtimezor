@@ -1,3 +1,6 @@
+import datetime
+
+
 class Project:
 
     def __init__(self, data):
@@ -5,7 +8,7 @@ class Project:
         self.name = data['name']
         self.description = data['description']
         self.affinity = data['affinity']
-        self.elapsed_time = data['elapsed_time']
+        self.elapsed_time = datetime.timedelta(seconds=(data['elapsed_time']))
         self.steps_finished = data['steps_finished']
         self.affinity = data['affinity']
         self.steps_list = initialize_steps(data['steps'])
@@ -41,6 +44,10 @@ class Project:
                     steps_count += 1
 
         return step_found
+
+    def register_elapsed_time(self, elapsed_time):
+        self.elapsed_time += elapsed_time
+        return self.elapsed_time
 
 
 class Step:

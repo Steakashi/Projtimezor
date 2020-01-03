@@ -1,6 +1,6 @@
 @echo off
 
-set "VIRTUAL_ENV=F:\simple-project-time-manager\kivy_venv"
+set "VIRTUAL_ENV=F:\Projtimezor\kivy_venv"
 
 if defined _OLD_VIRTUAL_PROMPT (
     set "PROMPT=%_OLD_VIRTUAL_PROMPT%"

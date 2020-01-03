@@ -9,6 +9,7 @@ class Manager:
         self.projects_list = list()
         self.initialize_groups(data['groups'])
         self.initialize_projects(data['projects'])
+        self.current_project = None
 
     @property
     def groups(self):
@@ -18,6 +19,13 @@ class Manager:
     def projects(self):
         return [project.properties for project in self.projects_list]
 
+    def get_automatic_project(self):
+        if not self.projects_list:
+            return
+
+        self.current_project = sorted(self.projects_list, key=lambda project: project.elapsed_time)[0]
+        return self.current_project
+
     def initialize_groups(self, groups):
         for data_group in groups:
             self.groups_list.append(Group(data_group))
@@ -26,5 +34,5 @@ class Manager:
         for data_project in projects:
             self.projects_list.append(Project(data_project))
 
-    def get_automatic_project(self):
-        return sorted(self.projects_list, key=lambda project: (project.elapsed_time))[0] if self.projects_list else None
+    def register_elapsed_time(self, elapsed_time):
+        return self.current_project.register_elapsed_time(elapsed_time)
