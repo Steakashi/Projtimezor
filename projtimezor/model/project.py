@@ -11,11 +11,21 @@ class Project:
         self.elapsed_time = datetime.timedelta(seconds=(data['elapsed_time']))
         self.steps_finished = data['steps_finished']
         self.affinity = data['affinity']
-        self.steps_list = initialize_steps(data['steps'])
+        self.steps = initialize_steps(data['steps'])
 
     @property
     def properties(self):
         return self.__dict__
+
+    @property
+    def json(self):
+        json = dict()
+        for key, value in self.__dict__.items():
+            if key == "steps":
+                json[key] = value.json
+            else:
+                json[key] = value
+        return json
 
     def _search_inner_steps(self, browsed_steps, steps_count):
         step_found = None
@@ -33,7 +43,7 @@ class Project:
 
     def get_current_step(self):
         steps_count = 0
-        for step in self.steps_list:
+        for step in self.steps:
             if step.inner_steps:
                 step_found, steps_count = self._search_inner_steps(step.inner_steps, steps_count)
             else:
@@ -61,6 +71,11 @@ class Step:
             self.inner_steps = initialize_steps(data['steps'])
         else:
             self.inner_steps = False
+
+    @property
+    def json(self):
+        return self.__dict__
+
 
 def initialize_steps(data_steps):
     steps_list = list()

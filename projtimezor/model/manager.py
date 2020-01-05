@@ -26,6 +26,9 @@ class Manager:
         self.current_project = sorted(self.projects_list, key=lambda project: project.elapsed_time)[0]
         return self.current_project
 
+    def get_current_project(self):
+        return self.current_project
+
     def initialize_groups(self, groups):
         for data_group in groups:
             self.groups_list.append(Group(data_group))

@@ -42,5 +42,8 @@ class MainApp:
     def resume(self):
         self.processing = True
 
+    def save(self):
+        self.provider.save_data(self.manager.get_current_project())
+
     def register_elapsed_time(self, elapsed_time):
         return self.manager.register_elapsed_time(elapsed_time)

@@ -1,6 +1,7 @@
 {
   "name": "project_name_1",
   "description": "project_description",
+  "uuid": "d692a4d8-b927-4204-a910-7bfd529f0eaf",
   "group_uuid": "a09ce116-c7d5-40b2-8831-7d351c1a4ffe",
   "elapsed_time": 0,
   "steps_finished": 2,

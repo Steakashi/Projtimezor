@@ -45,6 +45,7 @@ class MainWindow(App):
 
     def pause(self, instance=None):
         self.app.pause()
+        self.app.save()
 
     def resume(self, instance=None):
         self.last_clock_saved = datetime.datetime.now()
@@ -60,4 +61,3 @@ class MainWindow(App):
         self.screens[INITIALIZED_SCREEN].set_label_elapsed_time(hours, minutes, seconds)
 
         self.last_clock_saved = datetime.datetime.now()
-

@@ -36,4 +36,8 @@ def load_data():
 
     return retrieved_data
 
+def save_data(project):
+    print(project.json)
+
+
 
