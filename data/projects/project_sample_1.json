@@ -3,7 +3,7 @@
     "name": "project_name_1",
     "description": "project_description",
     "affinity": 1,
-    "elapsed_time": 4,
+    "elapsed_time": 13,
     "steps_finished": 2,
     "steps": [
         {

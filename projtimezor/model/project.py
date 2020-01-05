@@ -60,7 +60,6 @@ class Project:
 
     def register_elapsed_time(self, elapsed_time):
         self.elapsed_time += elapsed_time
-        return self.elapsed_time
 
 
 class Step:

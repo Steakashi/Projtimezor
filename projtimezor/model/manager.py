@@ -38,4 +38,4 @@ class Manager:
             self.projects_list.append(Project(data_project))
 
     def register_elapsed_time(self, elapsed_time):
-        return self.current_project.register_elapsed_time(elapsed_time)
+        self.current_project.register_elapsed_time(elapsed_time)

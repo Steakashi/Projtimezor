@@ -3,12 +3,16 @@ from .implementation import default, local
 from .model.manager import Manager
 
 
+import datetime
+
+
 class MainApp:
 
     provider = default
     manager = None
     config = None
     processing = False
+    session_elapsed_time = datetime.timedelta()
 
     def __init__(self):
         self.set_implementation()
@@ -46,4 +50,6 @@ class MainApp:
         self.provider.save_data(self.manager.get_current_project())
 
     def register_elapsed_time(self, elapsed_time):
-        return self.manager.register_elapsed_time(elapsed_time)
+        self.manager.register_elapsed_time(elapsed_time)
+        self.session_elapsed_time += elapsed_time
+        return self.session_elapsed_time
