@@ -1,37 +1,36 @@
 {
-  "name": "project_name_1",
-  "description": "project_description",
-  "uuid": "d692a4d8-b927-4204-a910-7bfd529f0eaf",
-  "group_uuid": "a09ce116-c7d5-40b2-8831-7d351c1a4ffe",
-  "elapsed_time": 0,
-  "steps_finished": 2,
-  "affinity": 1,
-  "steps": [
-    {
-      "description": "step_description",
-      "order": "auto",
-      "elapsed_time": 0,
-      "finished": false
-    },
-    {
-      "description": "step_description",
-      "order": "auto",
-      "elapsed_time": 0,
-      "finished": false,
-      "steps":[
+    "group_uuid": "a09ce116-c7d5-40b2-8831-7d351c1a4ffe",
+    "name": "project_name_1",
+    "description": "project_description",
+    "affinity": 1,
+    "elapsed_time": 4,
+    "steps_finished": 2,
+    "steps": [
         {
-          "description": "inner_step_description",
-          "order": "auto",
-          "elapsed_time": 0,
-          "finished": false
+            "description": "step_description",
+            "order": "auto",
+            "elapsed_time": 0,
+            "finished": false
         },
         {
-          "description": "inner_step_description",
-          "order": "auto",
-          "elapsed_time": 0,
-          "finished": false
+            "description": "step_description",
+            "order": "auto",
+            "elapsed_time": 0,
+            "finished": false,
+            "steps": [
+                {
+                    "description": "inner_step_description",
+                    "order": "auto",
+                    "elapsed_time": 0,
+                    "finished": false
+                },
+                {
+                    "description": "inner_step_description",
+                    "order": "auto",
+                    "elapsed_time": 0,
+                    "finished": false
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

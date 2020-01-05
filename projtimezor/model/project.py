@@ -12,6 +12,7 @@ class Project:
         self.steps_finished = data['steps_finished']
         self.affinity = data['affinity']
         self.steps = initialize_steps(data['steps'])
+        self.filename = data['filename']
 
     @property
     def properties(self):
@@ -21,9 +22,11 @@ class Project:
     def json(self):
         json = dict()
         for key, value in self.__dict__.items():
-            if key == "steps":
-                json[key] = value.json
-            else:
+            if key == 'steps':
+                json[key] = [step_data.json for step_data in value]
+            elif key == 'elapsed_time':
+                json[key] = value.seconds
+            elif key != 'filename':
                 json[key] = value
         return json
 
@@ -65,7 +68,7 @@ class Step:
     def __init__(self, data):
         self.description = data['description']
         self.order = data['order']
-        self.elapsed_time = data['elapsed_time']
+        self.elapsed_time = datetime.timedelta(seconds=(data['elapsed_time']))
         self.finished = data['finished']
         if data.get('steps'):
             self.inner_steps = initialize_steps(data['steps'])
@@ -74,7 +77,17 @@ class Step:
 
     @property
     def json(self):
-        return self.__dict__
+        json = dict()
+        for key, value in self.__dict__.items():
+            if key == 'inner_steps':
+                if not self.inner_steps:
+                    continue
+                json['steps'] = [inner_step_data.json for inner_step_data in value]
+            elif key == 'elapsed_time':
+                json[key] = value.seconds
+            else:
+                json[key] = value
+        return json
 
 
 def initialize_steps(data_steps):

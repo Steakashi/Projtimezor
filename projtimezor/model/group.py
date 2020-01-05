@@ -4,6 +4,7 @@ class Group:
         self.uuid = data['uuid']
         self.name = data['name']
         self.affinity = data['affinity']
+        self.filename = data['filename']
 
     @property
     def properties(self):
