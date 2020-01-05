@@ -24,18 +24,21 @@ class InitializedScreen(Screen):
 
         self.add_widget(self.main_layout)
 
-    def set_parameters(self, parent, project, step):
-        label_project = Label(text=project.name)
-        label_step = Label(text=step.description)
-        self.project_layout.add_widget(label_project)
-        self.project_layout.add_widget(label_step)
+    def set_parameters(self, parent, project_name, step_description):
+        self.label_project = Label(text=project_name)
+        self.label_step = Label(text=step_description)
+        self.project_layout.add_widget(self.label_project)
+        self.project_layout.add_widget(self.label_step)
 
         button_pause = Button(text='Pause')
         button_pause.bind(on_press=parent.pause)
         button_resume = Button(text='Resume')
         button_resume.bind(on_press=parent.resume)
+        button_validate = Button(text='Validate')
+        button_validate.bind(on_press=parent.validate)
         self.toolbar_layout.add_widget(button_pause)
         self.toolbar_layout.add_widget(button_resume)
+        self.toolbar_layout.add_widget(button_validate)
         self.toolbar_layout.add_widget(Label(text='test 2'))
 
         self.label_time = Label(text='0')
@@ -43,6 +46,9 @@ class InitializedScreen(Screen):
 
         parent.set_start_clock()
         Clock.schedule_interval(parent.calculate_elapsed_time, .1)
+
+    def update_step(self, step_text):
+        self.label_step.text = step_text
 
     def set_label_elapsed_time(self, hours, minutes, seconds):
         self.label_time.text = '{:02}:{:02}:{:02}'.format(hours, minutes, seconds)

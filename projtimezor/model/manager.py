@@ -19,15 +19,21 @@ class Manager:
     def projects(self):
         return [project.properties for project in self.projects_list]
 
-    def get_automatic_project(self):
+    def get_project(self):
         if not self.projects_list:
             return
 
         self.current_project = sorted(self.projects_list, key=lambda project: project.elapsed_time)[0]
         return self.current_project
 
+    def get_step(self):
+        return self.current_project.get_current_step()
+
     def get_current_project(self):
         return self.current_project
+
+    def validate_step(self):
+        self.current_project.validate_step()
 
     def initialize_groups(self, groups):
         for data_group in groups:

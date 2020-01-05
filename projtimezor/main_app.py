@@ -29,10 +29,11 @@ class MainApp:
     def get_data(self):
         return self.provider.load_data()
 
-    def get_automatic_project_step(self):
-        project = self.manager.get_automatic_project()
-        step = project.get_current_step()
-        return project, step
+    def get_project(self):
+        return self.manager.get_project()
+
+    def get_step(self):
+        return self.manager.get_step()
 
     def initialize(self):
         self.manager = Manager(self.get_data())
@@ -45,6 +46,9 @@ class MainApp:
 
     def resume(self):
         self.processing = True
+
+    def validate(self):
+        self.manager.validate_step()
 
     def save(self):
         self.provider.save_data(self.manager.get_current_project())

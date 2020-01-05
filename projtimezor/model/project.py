@@ -7,12 +7,15 @@ class Project:
         self.group_uuid = data['group_uuid']
         self.name = data['name']
         self.description = data['description']
+        self.finished = data['finished']
         self.affinity = data['affinity']
         self.elapsed_time = datetime.timedelta(seconds=(data['elapsed_time']))
         self.steps_finished = data['steps_finished']
-        self.affinity = data['affinity']
         self.steps = initialize_steps(data['steps'])
+        self.steps_number = self.count_steps()
+        self.affinity = data['affinity']
         self.filename = data['filename']
+        self.current_step = None
 
     @property
     def properties(self):
@@ -26,7 +29,7 @@ class Project:
                 json[key] = [step_data.json for step_data in value]
             elif key == 'elapsed_time':
                 json[key] = value.seconds
-            elif key != 'filename':
+            elif key not in ['filename', 'current_step']:
                 json[key] = value
         return json
 
@@ -44,19 +47,52 @@ class Project:
 
         return step_found, steps_count
 
+    def _count_inner_steps(self, steps_list, steps_number=0):
+        for step in steps_list:
+            steps_number += 1
+            if step.inner_steps:
+                steps_number = self._count_steps(step.inner_steps, steps_number)
+
+        return steps_list, steps_number
+
+    def count_steps(self):
+        steps_number = 0
+        for step in self.steps:
+            if step.inner_steps:
+                step_list, steps_number = self._count_inner_steps(step.inner_steps, steps_number)
+            else:
+                steps_number += 1
+        return steps_number
+
     def get_current_step(self):
         steps_count = 0
+        step_found = self.steps[0]
+
         for step in self.steps:
             if step.inner_steps:
                 step_found, steps_count = self._search_inner_steps(step.inner_steps, steps_count)
             else:
                 if steps_count == self.steps_finished:
+                    self.current_step = step_found
                     return step_found
 
                 else:
                     steps_count += 1
 
-        return step_found
+        if step_found:
+            self.current_step = step_found
+
+        return self.current_step
+
+    def validate_step(self):
+        if self.finished:
+            return
+
+        self.current_step.validate_step()
+        self.steps_finished += 1
+  
+        if self.steps_finished == self.steps_number:
+            self.finished = True
 
     def register_elapsed_time(self, elapsed_time):
         self.elapsed_time += elapsed_time
@@ -87,6 +123,9 @@ class Step:
             else:
                 json[key] = value
         return json
+
+    def validate_step(self):
+        self.finished = True
 
 
 def initialize_steps(data_steps):

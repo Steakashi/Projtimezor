@@ -37,9 +37,10 @@ class MainWindow(App):
 
     def initialize(self, instance):
         self.app.initialize()
-        project, step = self.app.get_automatic_project_step()
+        project = self.app.get_project()
+        step = self.app.get_step()
 
-        self.screens[INITIALIZED_SCREEN].set_parameters(self, project, step)
+        self.screens[INITIALIZED_SCREEN].set_parameters(self, project.name, step.description if step else "")
         self.screen_manager.switch_to(self.screens[INITIALIZED_SCREEN])
         self.resume()
 
@@ -50,6 +51,15 @@ class MainWindow(App):
     def resume(self, instance=None):
         self.last_clock_saved = datetime.datetime.now()
         self.app.resume()
+
+    def validate(self, instance=None):
+        self.app.validate()
+        self.app.save()
+
+        step = self.app.get_step()
+        self.screens[INITIALIZED_SCREEN].update_step(step.description if step else "")
+        self.screen_manager.switch_to(self.screens[INITIALIZED_SCREEN])
+        self.resume()
 
     def calculate_elapsed_time(self, instance=None):
         if not self.app.is_processing():
