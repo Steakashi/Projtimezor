@@ -23,11 +23,12 @@ class Manager:
         if not self.projects_list:
             return
 
-        self.current_project = sorted(
+        sorted_project = sorted(
             [project for project in self.projects_list if not project.finished],
             key=lambda project: project.elapsed_time
         )
-        return self.current_project[0] if len(self.current_project) > 0 else None
+        self.current_project = sorted_project[0] if len(sorted_project) > 0 else None
+        return self.current_project
 
     def get_step(self):
         return self.current_project.get_current_step()

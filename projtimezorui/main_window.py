@@ -57,6 +57,7 @@ class MainWindow(App):
         self.app.resume()
 
     def validate(self, instance=None):
+        #TODO : reset timer
         self.app.validate()
         self.app.save()
 
@@ -64,6 +65,9 @@ class MainWindow(App):
         self.screens[INITIALIZED_SCREEN].update_step(step.description if step else "")
         self.screen_manager.switch_to(self.screens[INITIALIZED_SCREEN])
         self.resume()
+
+    def stop(self):
+        self.pause()
 
     def calculate_elapsed_time(self, instance=None):
         if not self.app.is_processing():

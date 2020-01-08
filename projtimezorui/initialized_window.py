@@ -36,9 +36,12 @@ class InitializedScreen(Screen):
         button_resume.bind(on_press=parent.resume)
         button_validate = Button(text='Validate')
         button_validate.bind(on_press=parent.validate)
+        button_stop = Button(text='Validate')
+        button_stop.bind(on_press=parent.stop)
         self.toolbar_layout.add_widget(button_pause)
         self.toolbar_layout.add_widget(button_resume)
         self.toolbar_layout.add_widget(button_validate)
+        self.toolbar_layout.add_widget(button_stop)
         self.toolbar_layout.add_widget(Label(text='test 2'))
 
         self.label_time = Label(text='0')

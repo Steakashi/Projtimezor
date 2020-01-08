@@ -2,10 +2,10 @@
     "group_uuid": "a09ce116-c7d5-40b2-8831-7d351c1a4ffe",
     "name": "project_name_1",
     "description": "project_description",
-    "finished": true,
+    "finished": false,
     "affinity": 1,
-    "elapsed_time": 58,
-    "steps_finished": 3,
+    "elapsed_time": 4,
+    "steps_finished": 1,
     "steps": [
         {
             "description": "step_description 1",
@@ -23,13 +23,13 @@
                     "description": "inner_step_description 3",
                     "order": "auto",
                     "elapsed_time": 0,
-                    "finished": true
+                    "finished": false
                 },
                 {
                     "description": "inner_step_description 4",
                     "order": "auto",
                     "elapsed_time": 0,
-                    "finished": true
+                    "finished": false
                 }
             ]
         }
