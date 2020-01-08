@@ -38,11 +38,15 @@ class MainWindow(App):
     def initialize(self, instance):
         self.app.initialize()
         project = self.app.get_project()
-        step = self.app.get_step()
+        step = self.app.get_step() if project else None
 
-        self.screens[INITIALIZED_SCREEN].set_parameters(self, project.name, step.description if step else "")
+        self.screens[INITIALIZED_SCREEN].set_parameters(
+            self,
+            project.name if project else "All projects are complete, congrats boï !",
+            step.description if step else ""
+        )
         self.screen_manager.switch_to(self.screens[INITIALIZED_SCREEN])
-        self.resume()
+        self.resume() if project else self.app.pause()
 
     def pause(self, instance=None):
         self.app.pause()
