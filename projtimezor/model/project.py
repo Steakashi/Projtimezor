@@ -1,6 +1,9 @@
 import datetime
 
 
+from ..constants import STATE_FINISHED
+
+
 class Project:
 
     def __init__(self, data):
@@ -65,10 +68,14 @@ class Project:
         return steps_number
 
     def get_current_step(self):
+        if self.finished:
+            return STATE_FINISHED
+
         steps_count = 0
         step_found = self.steps[0]
 
         for step in self.steps:
+            print(step)
             if step.inner_steps:
                 step_found, steps_count = self._search_inner_steps(step.inner_steps, steps_count)
             else:

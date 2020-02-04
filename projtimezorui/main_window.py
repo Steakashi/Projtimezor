@@ -7,7 +7,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 
 from .start_window import StartScreen
 from .initialized_window import InitializedScreen
-from projtimezor.constants import START_SCREEN, INITIALIZED_SCREEN
+from projtimezor.constants import START_SCREEN, INITIALIZED_SCREEN, STATE_FINISHED
 
 
 class MainWindow(App):
@@ -42,7 +42,7 @@ class MainWindow(App):
 
         self.screens[INITIALIZED_SCREEN].set_parameters(
             self,
-            project.name if project else "All projects are complete, congrats boï !",
+            project.name if project else "All projects are complete, congrats boi !",
             step.description if step else ""
         )
         self.screen_manager.switch_to(self.screens[INITIALIZED_SCREEN])
@@ -56,17 +56,23 @@ class MainWindow(App):
         self.last_clock_saved = datetime.datetime.now()
         self.app.resume()
 
+    def update_step(self):
+        step = self.app.get_step()
+        if step is STATE_FINISHED:
+            self.screens[INITIALIZED_SCREEN].update_step("Project complete !")
+        else:
+            self.screens[INITIALIZED_SCREEN].update_step(step.description)
+
     def validate(self, instance=None):
         #TODO : reset timer
         self.app.validate()
         self.app.save()
+        self.update_step()
 
-        step = self.app.get_step()
-        self.screens[INITIALIZED_SCREEN].update_step(step.description if step else "")
         self.screen_manager.switch_to(self.screens[INITIALIZED_SCREEN])
         self.resume()
 
-    def stop(self):
+    def stop(self, instance=None):
         self.pause()
 
     def calculate_elapsed_time(self, instance=None):

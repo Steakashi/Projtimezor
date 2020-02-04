@@ -27,6 +27,7 @@ class Manager:
             [project for project in self.projects_list if not project.finished],
             key=lambda project: project.elapsed_time
         )
+
         self.current_project = sorted_project[0] if len(sorted_project) > 0 else None
         return self.current_project
 
@@ -37,6 +38,7 @@ class Manager:
         return self.current_project
 
     def validate_step(self):
+        #TODO : handle cases where currrent project is None
         self.current_project.validate_step()
 
     def initialize_groups(self, groups):
