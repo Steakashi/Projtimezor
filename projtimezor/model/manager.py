@@ -19,12 +19,15 @@ class Manager:
     def projects(self):
         return [project.properties for project in self.projects_list]
 
-    def get_project(self):
+    def get_project(self, ignore_project=False):
         if not self.projects_list:
             return
 
+        print('GET PROJECT')
+        print(self.current_project)
         sorted_project = sorted(
-            [project for project in self.projects_list if not project.finished],
+            [project for project in self.projects_list if not project.finished and
+             (project != self.current_project if ignore_project else True)],
             key=lambda project: project.elapsed_time
         )
 

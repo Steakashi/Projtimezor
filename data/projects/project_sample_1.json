@@ -1,14 +1,14 @@
 {
     "description": "project_description", 
-    "steps_finished": 3, 
+    "steps_finished": 0, 
     "group_uuid": "a09ce116-c7d5-40b2-8831-7d351c1a4ffe", 
-    "elapsed_time": 76, 
-    "finished": true, 
+    "elapsed_time": 94, 
+    "finished": false, 
     "affinity": 1, 
     "steps": [
         {
             "elapsed_time": 0, 
-            "finished": true, 
+            "finished": false, 
             "description": "step_description 1", 
             "order": "auto"
         }, 
@@ -18,13 +18,13 @@
             "steps": [
                 {
                     "elapsed_time": 0, 
-                    "finished": true, 
+                    "finished": false, 
                     "description": "inner_step_description 3", 
                     "order": "auto"
                 }, 
                 {
                     "elapsed_time": 0, 
-                    "finished": true, 
+                    "finished": false, 
                     "description": "inner_step_description 4", 
                     "order": "auto"
                 }

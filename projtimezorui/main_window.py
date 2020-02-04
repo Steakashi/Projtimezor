@@ -35,9 +35,11 @@ class MainWindow(App):
     def set_start_clock(self):
         self.clock_beginning = datetime.datetime.now()
 
-    def initialize(self, instance):
+    def initialize(self, instance=None, ignore_current_project=False):
+        print('\ninitialize')
+        #print(self.app.manager.get_current_project())
         self.app.initialize()
-        project = self.app.get_project()
+        project = self.app.get_another_project() if ignore_current_project else self.app.get_project()
         step = self.app.get_step() if project else None
 
         self.screens[INITIALIZED_SCREEN].set_parameters(
@@ -74,6 +76,7 @@ class MainWindow(App):
 
     def stop(self, instance=None):
         self.pause()
+        self.initialize(ignore_current_project=True)
 
     def calculate_elapsed_time(self, instance=None):
         if not self.app.is_processing():

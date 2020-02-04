@@ -36,7 +36,7 @@ class InitializedScreen(Screen):
         button_resume.bind(on_press=parent.resume)
         button_validate = Button(text='Validate')
         button_validate.bind(on_press=parent.validate)
-        button_stop = Button(text='Validate')
+        button_stop = Button(text='Stop')
         button_stop.bind(on_press=parent.stop)
         self.toolbar_layout.add_widget(button_pause)
         self.toolbar_layout.add_widget(button_resume)

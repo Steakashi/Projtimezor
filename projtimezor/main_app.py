@@ -29,6 +29,9 @@ class MainApp:
     def get_data(self):
         return self.provider.load_data()
 
+    def get_another_project(self):
+        return self.manager.get_project(ignore_project=True)
+
     def get_project(self):
         return self.manager.get_project()
 
