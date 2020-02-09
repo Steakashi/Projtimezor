@@ -29,6 +29,8 @@ class MainWindow(App):
         self.screens[INITIALIZED_SCREEN] = InitializedScreen(name='2')
         self.screen_manager.add_widget(self.screens[INITIALIZED_SCREEN])
 
+        self.app.initialize()
+
     def build(self):
         return self.screen_manager
 
@@ -36,9 +38,8 @@ class MainWindow(App):
         self.clock_beginning = datetime.datetime.now()
 
     def initialize(self, instance=None, ignore_current_project=False):
-        print('\ninitialize')
-        #print(self.app.manager.get_current_project())
-        self.app.initialize()
+        self.screens[INITIALIZED_SCREEN].initialize()
+
         project = self.app.get_another_project() if ignore_current_project else self.app.get_project()
         step = self.app.get_step() if project else None
 
@@ -71,12 +72,14 @@ class MainWindow(App):
         self.app.save()
         self.update_step()
 
-        self.screen_manager.switch_to(self.screens[INITIALIZED_SCREEN])
+        #self.screen_manager.switch_to(self.screens[INITIALIZED_SCREEN])
         self.resume()
 
     def stop(self, instance=None):
         self.pause()
-        self.initialize(ignore_current_project=True)
+
+        self.screens[INITIALIZED_SCREEN].clear_widgets()
+        self.screen_manager.switch_to(self.screens[START_SCREEN])
 
     def calculate_elapsed_time(self, instance=None):
         if not self.app.is_processing():

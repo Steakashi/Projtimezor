@@ -16,6 +16,7 @@ class InitializedScreen(Screen):
     def __init__(self, **kwargs):
         super(InitializedScreen, self).__init__(**kwargs)
 
+    def initialize(self):
         self.main_layout = GridLayout(rows=2)
         self.project_layout = BoxLayout(orientation='vertical')
         self.toolbar_layout = BoxLayout(orientation='horizontal')
