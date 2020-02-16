@@ -60,3 +60,6 @@ class MainApp:
         self.manager.register_elapsed_time(elapsed_time)
         self.session_elapsed_time += elapsed_time
         return self.session_elapsed_time
+
+    def reset_session_elapsed_time(self):
+        self.session_elapsed_time = datetime.timedelta()

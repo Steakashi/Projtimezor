@@ -80,6 +80,7 @@ class MainWindow(App):
 
         self.screens[INITIALIZED_SCREEN].clear_widgets()
         self.screen_manager.switch_to(self.screens[START_SCREEN])
+        self.app.reset_session_elapsed_time()
 
     def calculate_elapsed_time(self, instance=None):
         if not self.app.is_processing():
