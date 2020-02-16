@@ -7,7 +7,8 @@ from ..constants import STATE_FINISHED
 class Project:
 
     def __init__(self, data):
-        self.group_uuid = data['group_uuid']
+        self.group_id = data['group_id']
+        self.id = data["id"]
         self.name = data['name']
         self.description = data['description']
         self.finished = data['finished']

@@ -37,10 +37,10 @@ class MainWindow(App):
     def set_start_clock(self):
         self.clock_beginning = datetime.datetime.now()
 
-    def initialize(self, instance=None, ignore_current_project=False):
+    def initialize(self, instance=None):
         self.screens[INITIALIZED_SCREEN].initialize()
 
-        project = self.app.get_another_project() if ignore_current_project else self.app.get_project()
+        project = self.app.get_project()
         step = self.app.get_step() if project else None
 
         self.screens[INITIALIZED_SCREEN].set_parameters(
