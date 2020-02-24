@@ -2,8 +2,8 @@ from pathlib import Path
 import os
 
 
-ROOT_DIR = Path(__file__).parent.parent
-#ROOT_DIR = "D:\Projtimezor"
+#ROOT_DIR = Path(__file__).parent.parent
+ROOT_DIR = "D:\Projtimezor"
 PROJECT_FOLDER_PATH = os.path.join(ROOT_DIR, "data", "projects")
 GROUP_FOLDER_PATH = os.path.join(ROOT_DIR, "data", "groups")
 

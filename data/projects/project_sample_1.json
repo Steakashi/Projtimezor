@@ -1,39 +1,39 @@
 {
-    "group_id": "a09ce116-c7d5-40b2-8831-7d351c1a4ffe",
-    "id": 0,
-    "name": "project_name_1",
-    "description": "project_description",
-    "finished": false,
-    "affinity": 1,
-    "elapsed_time": 842,
-    "steps_finished": 0,
+    "group_id": "a09ce116-c7d5-40b2-8831-7d351c1a4ffe", 
+    "description": "project_description", 
+    "steps_finished": 0, 
+    "elapsed_time": 845, 
+    "finished": false, 
+    "priority": 2,
     "steps": [
         {
-            "description": "step_description 1",
-            "order": "auto",
-            "elapsed_time": 0,
-            "finished": false
-        },
+            "elapsed_time": 0, 
+            "finished": false, 
+            "description": "step_description 1", 
+            "order": "auto"
+        }, 
         {
-            "description": "step_description 2",
-            "order": "auto",
-            "elapsed_time": 0,
-            "finished": false,
+            "elapsed_time": 0, 
+            "finished": false, 
             "steps": [
                 {
-                    "description": "inner_step_description 3",
-                    "order": "auto",
-                    "elapsed_time": 0,
-                    "finished": false
-                },
+                    "elapsed_time": 0, 
+                    "finished": false, 
+                    "description": "inner_step_description 3", 
+                    "order": "auto"
+                }, 
                 {
-                    "description": "inner_step_description 4",
-                    "order": "auto",
-                    "elapsed_time": 0,
-                    "finished": false
+                    "elapsed_time": 0, 
+                    "finished": false, 
+                    "description": "inner_step_description 4", 
+                    "order": "auto"
                 }
-            ]
+            ], 
+            "description": "step_description 2", 
+            "order": "auto"
         }
-    ],
-    "steps_number": 3
+    ], 
+    "steps_number": 3, 
+    "id": 0, 
+    "name": "project_name_1"
 }

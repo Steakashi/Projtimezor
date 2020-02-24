@@ -3,7 +3,7 @@ class Group:
     def __init__(self, data):
         self.id = data['id']
         self.name = data['name']
-        self.affinity = data['affinity']
+        self.priority = data['priority']
         self.filename = data['filename']
 
     @property

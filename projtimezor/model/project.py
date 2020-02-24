@@ -17,7 +17,7 @@ class Project:
         self.steps_finished = data['steps_finished']
         self.steps = initialize_steps(data['steps'])
         self.steps_number = self.count_steps()
-        self.affinity = data['affinity']
+        self.priority = data['priority']
         self.filename = data['filename']
         self.current_step = None
 
