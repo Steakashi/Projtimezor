@@ -46,7 +46,8 @@ To calculate the impact of the priority value, we need two values, which are set
 Differences between two projects will be established when retrieving project data, according to the following algorithm :
 
 ```
-ponderated_elapsed_time = project.elapsed_time * float(interp1d([config.min_priority, config.max_priority,],[1, config.priority_impact]))
+priority_mapping_range = interp1d([config.min_priority, config.max_priority],[1, config.priority_impact])
+ponderated_elapsed_time = project.elapsed_time.seconds * float(priority_mapping_range(project.priority))
 ```
 
 To simplify, project elapsed time is mapped from priority range to priority_impact range. This has the effect to reduce elapsed time when priority is high, increasing chances to get this particular project at initialization.

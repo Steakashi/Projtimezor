@@ -12,7 +12,6 @@ class Project:
         self.name = data['name']
         self.description = data['description']
         self.finished = data['finished']
-        self.affinity = data['affinity']
         self.elapsed_time = datetime.timedelta(seconds=(data['elapsed_time']))
         self.steps_finished = data['steps_finished']
         self.steps = initialize_steps(data['steps'])

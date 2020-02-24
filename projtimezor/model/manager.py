@@ -1,5 +1,6 @@
 from .group import Group
 from .project import Project
+from scipy.interpolate import interp1d
 
 
 class Manager:
@@ -23,10 +24,11 @@ class Manager:
         if not self.projects_list:
             return
 
+        priority_mapping_range = interp1d([1, 10],[1, .5])
         sorted_project = sorted(
             [project for project in self.projects_list if not project.finished and
              (project.id != self.current_project.id if self.current_project else True)],
-            key=lambda project: project.elapsed_time
+            key=lambda project: project.elapsed_time.seconds * float(priority_mapping_range(project.priority))
         )
 
         self.current_project = sorted_project[0] if len(sorted_project) > 0 else None

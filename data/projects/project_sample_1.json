@@ -2,9 +2,9 @@
     "group_id": "a09ce116-c7d5-40b2-8831-7d351c1a4ffe", 
     "description": "project_description", 
     "steps_finished": 0, 
-    "elapsed_time": 845, 
+    "elapsed_time": 10,
     "finished": false, 
-    "priority": 2,
+    "priority": 10,
     "steps": [
         {
             "elapsed_time": 0, 
