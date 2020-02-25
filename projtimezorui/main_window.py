@@ -7,7 +7,8 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 
 from .start_window import StartScreen
 from .initialized_window import InitializedScreen
-from projtimezor.constants import START_SCREEN, INITIALIZED_SCREEN, STATE_FINISHED
+from .create_project_window import CreateProjectWindow
+from projtimezor.constants import START_SCREEN, INITIALIZED_SCREEN, PROJECT_CREATION_SCREEN, STATE_FINISHED
 
 
 class MainWindow(App):
@@ -29,6 +30,9 @@ class MainWindow(App):
         self.screens[INITIALIZED_SCREEN] = InitializedScreen(name='2')
         self.screen_manager.add_widget(self.screens[INITIALIZED_SCREEN])
 
+        self.screens[PROJECT_CREATION_SCREEN] = CreateProjectWindow(name='3')
+        self.screen_manager.add_widget(self.screens[PROJECT_CREATION_SCREEN])
+
         self.app.initialize()
 
     def build(self):
@@ -36,6 +40,18 @@ class MainWindow(App):
 
     def set_start_clock(self):
         self.clock_beginning = datetime.datetime.now()
+
+    def create_project(self, instance=None):
+        self.screen_manager.switch_to(self.screens[PROJECT_CREATION_SCREEN])
+
+    def edit_project(self, instance=None):
+        pass
+
+    def create_group(self, instance=None):
+        pass
+
+    def edit_group(self, instance=None):
+        pass
 
     def initialize(self, instance=None):
         self.screens[INITIALIZED_SCREEN].initialize()

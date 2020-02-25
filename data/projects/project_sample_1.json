@@ -1,10 +1,10 @@
 {
+    "elapsed_time": 207, 
     "group_id": "a09ce116-c7d5-40b2-8831-7d351c1a4ffe", 
     "description": "project_description", 
     "steps_finished": 0, 
-    "elapsed_time": 10,
+    "priority": 10, 
     "finished": false, 
-    "priority": 10,
     "steps": [
         {
             "elapsed_time": 0, 
