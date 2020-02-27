@@ -31,6 +31,7 @@ class MainWindow(App):
         self.screen_manager.add_widget(self.screens[INITIALIZED_SCREEN])
 
         self.screens[PROJECT_CREATION_SCREEN] = CreateProjectWindow(name='3')
+        self.screens[PROJECT_CREATION_SCREEN].set_parameters(parent=self)
         self.screen_manager.add_widget(self.screens[PROJECT_CREATION_SCREEN])
 
         self.app.initialize()
@@ -41,16 +42,20 @@ class MainWindow(App):
     def set_start_clock(self):
         self.clock_beginning = datetime.datetime.now()
 
-    def create_project(self, instance=None):
+    def create_project_window(self, instance=None):
         self.screen_manager.switch_to(self.screens[PROJECT_CREATION_SCREEN])
 
-    def edit_project(self, instance=None):
+    def create_project(self, project_values, instance):
+        print(project_values)
+        pass #self.app.create_project()
+
+    def edit_project_window(self, instance=None):
         pass
 
-    def create_group(self, instance=None):
+    def create_group_window(self, instance=None):
         pass
 
-    def edit_group(self, instance=None):
+    def edit_group_window(self, instance=None):
         pass
 
     def initialize(self, instance=None):

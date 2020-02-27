@@ -23,19 +23,19 @@ class StartScreen(Screen):
         main.add_widget(button_main_start)
 
         button_toolbar_create_project = Button(text='Create project')
-        button_toolbar_create_project.bind(on_press=parent.create_project)
+        button_toolbar_create_project.bind(on_press=parent.create_project_window)
         toolbar.add_widget(button_toolbar_create_project)
 
         button_toolbar_edit_project = Button(text='Edit project')
-        button_toolbar_edit_project.bind(on_press=parent.edit_project)
+        button_toolbar_edit_project.bind(on_press=parent.edit_project_window)
         toolbar.add_widget(button_toolbar_edit_project)
 
         button_toolbar_create_group = Button(text='Create group')
-        button_toolbar_create_group.bind(on_press=parent.create_group)
+        button_toolbar_create_group.bind(on_press=parent.create_group_window)
         toolbar.add_widget(button_toolbar_create_group)
 
         button_toolbar_edit_group = Button(text='Edit group')
-        button_toolbar_edit_group.bind(on_press=parent.edit_group)
+        button_toolbar_edit_group.bind(on_press=parent.edit_group_window)
         toolbar.add_widget(button_toolbar_edit_group)
 
         main_layout.add_widget(main)
