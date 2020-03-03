@@ -81,6 +81,9 @@ class MainWindow(App):
 
     def update_step(self):
         step = self.app.get_step()
+        if not step:
+            return
+
         if step is STATE_FINISHED:
             self.screens[INITIALIZED_SCREEN].update_step("Project complete !")
         else:
