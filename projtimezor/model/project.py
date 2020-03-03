@@ -1,4 +1,5 @@
 import datetime
+import uuid
 
 
 from ..constants import STATE_FINISHED
@@ -7,18 +8,18 @@ from ..constants import STATE_FINISHED
 class Project:
 
     def __init__(self, data):
-        self.group_id = data['group_id']
-        self.id = data["id"]
+        self.group_id = data.get('group_id')
+        self.id = data.get("id", str(uuid.uuid4()))
         self.name = data['name']
         self.description = data['description']
-        self.finished = data['finished']
-        self.elapsed_time = datetime.timedelta(seconds=(data['elapsed_time']))
-        self.steps_finished = data['steps_finished']
-        self.steps = initialize_steps(data['steps'])
+        self.finished = data.get('finished', False)
+        self.elapsed_time = datetime.timedelta(seconds=(data.get('elapsed_time', 0)))
+        self.steps_finished = data.get('steps_finished', 0)
+        self.steps = initialize_steps(data.get('steps', []))
         self.steps_number = self.count_steps()
         self.priority = data['priority']
-        self.filename = data['filename']
         self.current_step = None
+        self.filename = data.get('filename', 'project_{}_{}'.format(self.name, self.id))
 
     @property
     def properties(self):

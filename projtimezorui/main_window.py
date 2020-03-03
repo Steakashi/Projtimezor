@@ -45,9 +45,8 @@ class MainWindow(App):
     def create_project_window(self, instance=None):
         self.screen_manager.switch_to(self.screens[PROJECT_CREATION_SCREEN])
 
-    def create_project(self, project_values, instance):
-        print(project_values)
-        pass #self.app.create_project()
+    def create_project(self, instance=None):
+        self.app.create_project(self.screens[PROJECT_CREATION_SCREEN].get_text_inputs())
 
     def edit_project_window(self, instance=None):
         pass

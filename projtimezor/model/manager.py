@@ -52,5 +52,10 @@ class Manager:
         for data_project in projects:
             self.projects_list.append(Project(data_project))
 
+    def create_project(self, project_data):
+        created_project = Project(project_data)
+        self.projects_list.append(created_project)
+        return created_project
+
     def register_elapsed_time(self, elapsed_time):
         self.current_project.register_elapsed_time(elapsed_time)

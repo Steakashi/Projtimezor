@@ -41,6 +41,6 @@ def load_data():
 
 
 def save_data(project):
-    with open(os.path.join(PROJECT_FOLDER_PATH, project.filename), 'w') as project_file:
+    with open(os.path.join(PROJECT_FOLDER_PATH, project.filename + ".json"), 'w') as project_file:
         json.dump(project.json, project_file, indent=4)
 

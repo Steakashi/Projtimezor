@@ -26,19 +26,18 @@ class CreateProjectWindow(Screen):
         self.inputs = list()
         for field in FIELDS:
             self.main_layout.add_widget(Label(text=field.capitalize()))
-            text_input = TextInput(text=field, multiline=False)
+            text_input = TextInput(text='', multiline=False)
             self.inputs.append(text_input)
             self.main_layout.add_widget(text_input)
 
         self.add_widget(self.main_layout)
 
+    def get_text_inputs(self):
+        return {FIELDS[count]: input_.text for count, input_ in enumerate(self.inputs)}
+
     def set_parameters(self, parent):
         button_create = Button(text='Create')
-        button_create.fbind(
-            'on_press',
-            parent.create_project,
-            {FIELDS[count]: input_.text for count, input_ in enumerate(self.inputs)}
-        )
+        button_create.bind(on_press=parent.create_project)
 
         self.main_layout.add_widget(Widget())
         self.main_layout.add_widget(button_create)

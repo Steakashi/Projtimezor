@@ -35,5 +35,6 @@
     ], 
     "steps_number": 3, 
     "id": 1, 
-    "name": "project_name_2"
+    "name": "project_name_2",
+    "filename": "project_sample_1"
 }
