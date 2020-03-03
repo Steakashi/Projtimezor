@@ -19,7 +19,7 @@ class Project:
         self.steps_number = self.count_steps()
         self.priority = data['priority']
         self.current_step = None
-        self.filename = data.get('filename', 'project_{}_{}'.format(self.name, self.id))
+        self.filename = data.get('filename', 'project_{}_{}.json'.format(self.name, self.id))
 
     @property
     def properties(self):
@@ -92,7 +92,11 @@ class Project:
         return self.current_step
 
     def validate_step(self):
-        if self.finished or not self.current_step:
+        if self.finished:
+            return
+
+        if not self.current_step:
+            self.finished = True
             return
 
         self.current_step.validate_step()
