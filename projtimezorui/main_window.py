@@ -1,14 +1,21 @@
 import datetime
+import os
 
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.lang import Builder
+from kivy.resources import resource_add_path
 
 
 from .start_window import StartScreen
 from .initialized_window import InitializedScreen
 from .create_project_window import CreateProjectWindow
 from projtimezor.constants import START_SCREEN, INITIALIZED_SCREEN, PROJECT_CREATION_SCREEN, STATE_FINISHED
+
+
+resource_add_path(os.path.abspath(os.path.join(os.path.dirname(__file__))))
+Builder.load_file('main.kv')
 
 
 class MainWindow(App):
@@ -46,7 +53,7 @@ class MainWindow(App):
         self.screen_manager.switch_to(self.screens[PROJECT_CREATION_SCREEN])
 
     def create_project(self, instance=None):
-        self.app.create_project(self.screens[PROJECT_CREATION_SCREEN].get_text_inputs())
+        self.app.create_project(self.screens[PROJECT_CREATION_SCREEN].get_text_projects_inputs())
 
     def edit_project_window(self, instance=None):
         pass
