@@ -32,6 +32,12 @@ STEP_FIELDS = [
 BUTTON_SIZE = 60
 
 
+ADD = 'ADD'
+EDIT = 'EDIT'
+STEP_OBJECT = 'STEP_OBJECT'
+STEP_LABEL = 'STEP_LABEL'
+
+
 SIZE_PROJECT_GRID = (0, 240)
 SIZE_ADD_STEP = (0, 180)
 SIZE_HINT_ADD_STEP = (.8, None)
@@ -64,6 +70,8 @@ class CustomBoxLayout(ColoredBackgoundMixin, BoxLayout):
 class CreateProjectWindow(Screen):
 
     created_steps = dict()
+    current_popup = None
+    current_edited_step = None
 
     def __init__(self, **kwargs):
         super(CreateProjectWindow, self).__init__(**kwargs)
@@ -90,10 +98,10 @@ class CreateProjectWindow(Screen):
         scroll_steps_layour = ScrollView(size_hint=(1, None), height=SIZE_STEPS_GRID[1])
         scroll_steps_layour.add_widget(self.steps_layout)
 
-        button_close = Button(text='Add step')
-        button_close.bind(on_press=self.add_step)
+        button_close = Button(text='Validate')
+        button_close.bind(on_press=self.validate_step_popup)
 
-        self.add_step_popup = Popup(
+        self.step_popup = Popup(
             title='Add Step',
             content=self.steps_creation_layout,
             auto_dismiss=False,
@@ -113,13 +121,19 @@ class CreateProjectWindow(Screen):
     def get_text_steps_inputs(self):
         return {STEP_FIELDS[count]: input_.text for count, input_ in enumerate(self.steps_inputs)}
 
+    def validate_step_popup(self, instance):
+        if self.current_popup == ADD:
+            self.add_step(instance)
+        elif self.current_popup == EDIT:
+            self.edit_step(instance)
+
     def empty_steps_inputs(self):
         for step in self.steps_inputs:
             step.text = ""
 
     def regenerate_steps(self):
         for id, step in self.created_steps.items():
-            self.add_step(step_object=step)
+            self.add_step(step_object=step[STEP_OBJECT])
 
     def delete_step(self, instance, step_id, step_layout):
         self.created_steps.pop(step_id)
@@ -133,7 +147,6 @@ class CreateProjectWindow(Screen):
             step_object = self.get_text_steps_inputs()
 
         step_id = str(uuid.uuid4())
-        self.created_steps[step_id] = step_object
 
         step_layout = CustomBoxLayout(
             orientation='horizontal', size=(0, BUTTON_SIZE), size_hint=(1, None),
@@ -143,22 +156,44 @@ class CreateProjectWindow(Screen):
         button_add = Button(text='Add', size=(BUTTON_SIZE, BUTTON_SIZE), size_hint=(None, None))
         button_delete = Button(text='Delete', size=(BUTTON_SIZE, BUTTON_SIZE), size_hint=(None, None))
 
+        button_edit.fbind('on_press', self.edit_step_window, step_id=step_id)#, step_layout=step_layout)
         button_delete.fbind('on_press', self.delete_step, step_id=step_id, step_layout=step_layout)
 
-        step_layout.add_widget(Label(text=step_object['description']))
+        step_label = Label(text=step_object['description'])
+        step_layout.add_widget(step_label)
         step_layout.add_widget(button_edit)
         step_layout.add_widget(button_add)
         step_layout.add_widget(button_delete)
 
+        self.created_steps[step_id] = {
+            STEP_OBJECT: step_object,
+            STEP_LABEL: step_label
+        }
+
         self.steps_layout.add_widget(step_layout)
-        self.add_step_popup.dismiss()
+        self.step_popup.dismiss()
+
+    def edit_step(self, instance=None):
+        step_object = self.get_text_steps_inputs()
+        self.created_steps[self.current_edited_step][STEP_OBJECT] = step_object
+        self.created_steps[self.current_edited_step][STEP_LABEL].text = step_object[STEP_FIELDS[0]]
+
+        self.current_edited_step = None
+        self.step_popup.dismiss()
+
+    def edit_step_window(self, instance, step_id):
+        self.current_popup = EDIT
+        self.current_edited_step = step_id
+        for index, step_input in enumerate(self.steps_inputs):
+            step_input.text = self.created_steps[step_id][STEP_OBJECT][STEP_FIELDS[index]]
+        self.step_popup.open()
 
     def add_step_window(self, instance=None):
+        self.current_popup = ADD
         self.empty_steps_inputs()
-        self.add_step_popup.open()
+        self.step_popup.open()
 
     def set_parameters(self, parent):
-        pass
         button_add_step = Button(text="Add Step")
         button_add_step.bind(on_press=self.add_step_window)
 
