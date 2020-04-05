@@ -34,8 +34,11 @@ BUTTON_SIZE = 60
 
 ADD = 'ADD'
 EDIT = 'EDIT'
+INNER_ADD = 'INNER_ADD'
+
 STEP_OBJECT = 'STEP_OBJECT'
 STEP_LABEL = 'STEP_LABEL'
+STEP_LAYOUT = 'STEP_LAYOUT'
 
 
 SIZE_PROJECT_GRID = (0, 240)
@@ -63,8 +66,56 @@ class ColoredBackgoundMixin:
         self._rect.size = instance.size
 
 
-class CustomBoxLayout(ColoredBackgoundMixin, BoxLayout):
+class CustomGridLayout(ColoredBackgoundMixin, GridLayout):
     pass
+
+
+class TempStep:
+    id = None
+    label = None
+    layout = None
+    inner_steps = list()
+
+    def __init__(self, data, callback):
+        self.id = str(uuid.uuid4())
+        self.label = Label()
+        self.set_parameters_from_input(data)
+        self.layout = self.generate_step_grid_layout(callback)
+
+    def set_parameters_from_input(self, step_dict):
+        for attribute, value in step_dict.items():
+            setattr(self, attribute, value)
+
+            if attribute == 'description':
+                self.label.text = value
+
+    def add_inner_step(self, data, callback):
+        inner_step = TempStep(data, callback)
+        self.inner_steps.append(inner_step)
+        return inner_step
+
+    def generate_step_grid_layout(self, callback):
+        global_step_layout = CustomGridLayout(
+            cols=1, size_hint=(1, None), padding=20,
+            background_color=[1, 1, 1, .1]
+        )
+
+        step_layout = GridLayout(cols=4)
+        button_edit = Button(text='Edit', size=(BUTTON_SIZE, BUTTON_SIZE), size_hint=(None, None))
+        button_add = Button(text='Add', size=(BUTTON_SIZE, BUTTON_SIZE), size_hint=(None, None))
+        button_delete = Button(text='Delete', size=(BUTTON_SIZE, BUTTON_SIZE), size_hint=(None, None))
+
+        button_add.fbind('on_press', callback.add_inner_step_window, step_id=self.id)
+        button_edit.fbind('on_press', callback.edit_step_window, step_id=self.id)
+        button_delete.fbind('on_press', callback.delete_step, step_id=self.id)
+
+        step_layout.add_widget(self.label)
+        step_layout.add_widget(button_edit)
+        step_layout.add_widget(button_add)
+        step_layout.add_widget(button_delete)
+
+        global_step_layout.add_widget(step_layout)
+        return global_step_layout
 
 
 class CreateProjectWindow(Screen):
@@ -126,6 +177,8 @@ class CreateProjectWindow(Screen):
             self.add_step(instance)
         elif self.current_popup == EDIT:
             self.edit_step(instance)
+        elif self.current_popup == INNER_ADD:
+            self.add_inner_step(instance)
 
     def empty_steps_inputs(self):
         for step in self.steps_inputs:
@@ -135,57 +188,50 @@ class CreateProjectWindow(Screen):
         for id, step in self.created_steps.items():
             self.add_step(step_object=step[STEP_OBJECT])
 
-    def delete_step(self, instance, step_id, step_layout):
+    def delete_step(self, instance, step_id):
+        self.steps_layout.remove_widget(self.created_steps[step_id].layout)
         self.created_steps.pop(step_id)
-        self.steps_layout.remove_widget(step_layout)
+
+    def add_inner_step(self, instance):
+        step = self.created_steps[self.current_edited_step]
+        inner_step = step.add_inner_step(
+            data=self.get_text_steps_inputs(),
+            callback=self
+        )
+        step.layout.add_widget(inner_step.layout)
+
+        self.step_popup.dismiss()
 
     def add_step(self, instance=None, step_object=None):
         if not instance and not step_object:
             return
 
-        if not step_object:
-            step_object = self.get_text_steps_inputs()
-
-        step_id = str(uuid.uuid4())
-
-        step_layout = CustomBoxLayout(
-            orientation='horizontal', size=(0, BUTTON_SIZE), size_hint=(1, None),
-            background_color=[1, 1, 1, .1]
+        step = TempStep(
+            data=self.get_text_steps_inputs() if not step_object else step_object,
+            callback=self
         )
-        button_edit = Button(text='Edit', size=(BUTTON_SIZE, BUTTON_SIZE), size_hint=(None, None))
-        button_add = Button(text='Add', size=(BUTTON_SIZE, BUTTON_SIZE), size_hint=(None, None))
-        button_delete = Button(text='Delete', size=(BUTTON_SIZE, BUTTON_SIZE), size_hint=(None, None))
+        self.created_steps[step.id] = step
 
-        button_edit.fbind('on_press', self.edit_step_window, step_id=step_id)#, step_layout=step_layout)
-        button_delete.fbind('on_press', self.delete_step, step_id=step_id, step_layout=step_layout)
-
-        step_label = Label(text=step_object['description'])
-        step_layout.add_widget(step_label)
-        step_layout.add_widget(button_edit)
-        step_layout.add_widget(button_add)
-        step_layout.add_widget(button_delete)
-
-        self.created_steps[step_id] = {
-            STEP_OBJECT: step_object,
-            STEP_LABEL: step_label
-        }
-
-        self.steps_layout.add_widget(step_layout)
+        self.steps_layout.add_widget(step.layout)
         self.step_popup.dismiss()
 
     def edit_step(self, instance=None):
-        step_object = self.get_text_steps_inputs()
-        self.created_steps[self.current_edited_step][STEP_OBJECT] = step_object
-        self.created_steps[self.current_edited_step][STEP_LABEL].text = step_object[STEP_FIELDS[0]]
+        step = self.created_steps[self.current_edited_step]
+        step.set_parameters_from_input(self.get_text_steps_inputs())
 
         self.current_edited_step = None
         self.step_popup.dismiss()
+
+    def add_inner_step_window(self, instance, step_id):
+        self.current_popup = INNER_ADD
+        self.current_edited_step = step_id
+        self.step_popup.open()
 
     def edit_step_window(self, instance, step_id):
         self.current_popup = EDIT
         self.current_edited_step = step_id
         for index, step_input in enumerate(self.steps_inputs):
-            step_input.text = self.created_steps[step_id][STEP_OBJECT][STEP_FIELDS[index]]
+            step_input.text = getattr(self.created_steps[step_id], STEP_FIELDS[index])
         self.step_popup.open()
 
     def add_step_window(self, instance=None):
