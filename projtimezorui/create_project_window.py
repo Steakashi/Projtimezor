@@ -18,6 +18,8 @@ from kivy.graphics.vertex_instructions import Rectangle
 
 import uuid
 import os
+from copy import copy
+from collections import OrderedDict
 
 
 PROJECT_FIELDS = [
@@ -66,7 +68,7 @@ class ColoredBackgoundMixin:
         self._rect.size = instance.size
 
 
-class CustomGridLayout(ColoredBackgoundMixin, GridLayout):
+class CustomGridLayout(ColoredBackgoundMixin, BoxLayout):
     pass
 
 
@@ -74,13 +76,16 @@ class TempStep:
     id = None
     label = None
     layout = None
-    inner_steps = list()
+    description = ''
+    given_width = 1
 
-    def __init__(self, data, callback):
+    def __init__(self, data, callback, given_width=None):
         self.id = str(uuid.uuid4())
-        self.label = Label()
+        self.inner_steps = list()
+        self.generate_step_grid_layout(callback)
         self.set_parameters_from_input(data)
-        self.layout = self.generate_step_grid_layout(callback)
+        if given_width:
+            self.given_width = given_width
 
     def set_parameters_from_input(self, step_dict):
         for attribute, value in step_dict.items():
@@ -89,14 +94,17 @@ class TempStep:
             if attribute == 'description':
                 self.label.text = value
 
-    def add_inner_step(self, data, callback):
-        inner_step = TempStep(data, callback)
-        self.inner_steps.append(inner_step)
-        return inner_step
+    def add_inner_steps(self, inner_step):
+        self.inner_steps.append(inner_step.id)
+
+    def _steps_layout_size(self):
+        return BUTTON_SIZE * (len(self.inner_steps) + 1)
 
     def generate_step_grid_layout(self, callback):
+        self.label = Label(text=self.description)
         global_step_layout = CustomGridLayout(
-            cols=1, size_hint=(1, None), padding=20,
+            size=(0, self._steps_layout_size()), size_hint=(.8, None),
+            orientation='vertical',
             background_color=[1, 1, 1, .1]
         )
 
@@ -115,12 +123,12 @@ class TempStep:
         step_layout.add_widget(button_delete)
 
         global_step_layout.add_widget(step_layout)
-        return global_step_layout
+        self.layout = global_step_layout
 
 
 class CreateProjectWindow(Screen):
 
-    created_steps = dict()
+    created_steps = OrderedDict()
     current_popup = None
     current_edited_step = None
 
@@ -166,6 +174,10 @@ class CreateProjectWindow(Screen):
         self.main_layout.add_widget(scroll_steps_layour)
         self.add_widget(self.main_layout)
 
+    def _flaten_steps(self, result, steps_list):
+        result.extend(list(steps_list.keys()))
+        return result.extend(self._flaten_steps(steps_list.inner_steps))
+
     def get_text_projects_inputs(self):
         return {PROJECT_FIELDS[count]: input_.text for count, input_ in enumerate(self.projects_inputs)}
 
@@ -184,22 +196,44 @@ class CreateProjectWindow(Screen):
         for step in self.steps_inputs:
             step.text = ""
 
-    def regenerate_steps(self):
-        for id, step in self.created_steps.items():
-            self.add_step(step_object=step[STEP_OBJECT])
+    def regenerate_layout(self, steps_list):
+        for step_id in steps_list.keys():
+            self.delete_step(
+                instance=None,
+                step_id=step_id,
+                layout_only=True
+            )
 
-    def delete_step(self, instance, step_id):
+        steps_to_treat = copy(self.created_steps)
+        while steps_to_treat:
+            step_id = next(iter(steps_to_treat))
+            step = self.created_steps[step_id]
+            step.generate_step_grid_layout(self)
+
+            for inner_step_id in step.inner_steps:
+                inner_step = self.created_steps[inner_step_id]
+                step.layout.add_widget(inner_step.layout)
+                del steps_to_treat[inner_step.id]
+
+            self.steps_layout.add_widget(step.layout)
+            del steps_to_treat[step.id]
+
+    def delete_step(self, instance, step_id, layout_only=False):
         self.steps_layout.remove_widget(self.created_steps[step_id].layout)
-        self.created_steps.pop(step_id)
+        if not layout_only:
+            self.created_steps.pop(step_id)
 
     def add_inner_step(self, instance):
         step = self.created_steps[self.current_edited_step]
-        inner_step = step.add_inner_step(
+        inner_step = TempStep(
             data=self.get_text_steps_inputs(),
-            callback=self
+            callback=self,
+            given_width=.8
         )
-        step.layout.add_widget(inner_step.layout)
+        step.add_inner_steps(inner_step)
+        self.created_steps[inner_step.id] = inner_step
 
+        self.regenerate_layout(self.created_steps)
         self.step_popup.dismiss()
 
     def add_step(self, instance=None, step_object=None):
