@@ -11,6 +11,7 @@ class Manager:
         self.initialize_groups(data['groups'])
         self.initialize_projects(data['projects'])
         self.current_project = None
+        self.current_group = None
 
     @property
     def groups(self):
@@ -27,9 +28,12 @@ class Manager:
         priority_mapping_range = interp1d([1, 10],[1, .5])
         sorted_project = sorted(
             [project for project in self.projects_list if not project.finished and
-             (project.id != self.current_project.id if self.current_project else True)],
+             (project.id != self.current_project.id if self.current_project else True) and
+             (self.current_group is None or self.current_group.id == project.group_id)],
             key=lambda project: project.elapsed_time.seconds * float(priority_mapping_range(project.priority))
         )
+        print(sorted_project)
+        print(len(sorted_project))
 
         self.current_project = sorted_project[0] if len(sorted_project) > 0 else None
         return self.current_project
@@ -40,8 +44,11 @@ class Manager:
     def get_current_project(self):
         return self.current_project
 
+    def set_group(self, group):
+        print(group)
+        self.current_group = group
+
     def validate_step(self):
-        #TODO : handle cases where currrent project is None
         self.current_project.validate_step()
 
     def initialize_groups(self, groups):

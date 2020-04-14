@@ -32,6 +32,12 @@ class MainApp:
     def get_project(self):
         return self.manager.get_project()
 
+    def groups(self):
+        return self.manager.groups_list
+
+    def set_group_filter(self, group):
+        self.manager.set_group(group)
+
     def get_step(self):
         return self.manager.get_step()
 

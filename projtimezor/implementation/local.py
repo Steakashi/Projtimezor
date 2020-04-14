@@ -14,7 +14,12 @@ def load_config():
 def get_groups(retrieved_data):
     group_directory = os.listdir(GROUP_FOLDER_PATH)
     for group_file_path in group_directory:
-        with open(os.path.join(GROUP_FOLDER_PATH, group_file_path)) as group_file:
+
+        single_file_path = os.path.join(GROUP_FOLDER_PATH, group_file_path)
+        if not os.path.isfile(single_file_path):
+            continue
+
+        with open(single_file_path) as group_file:
             loaded_group = yaml.load(group_file, Loader=yaml.FullLoader)
             loaded_group['filename'] = group_file_path
             retrieved_data['groups'].append(loaded_group)
@@ -23,7 +28,12 @@ def get_groups(retrieved_data):
 def get_projects(retrieved_data):
     project_directory = os.listdir(PROJECT_FOLDER_PATH)
     for project_file_path in project_directory:
-        with open(os.path.join(PROJECT_FOLDER_PATH, project_file_path)) as project_file:
+
+        single_file_path = os.path.join(PROJECT_FOLDER_PATH, project_file_path)
+        if not os.path.isfile(single_file_path):
+            continue
+
+        with open(single_file_path) as project_file:
             loaded_project = json.load(project_file)
             loaded_project['filename'] = project_file_path
             retrieved_data['projects'].append(loaded_project)

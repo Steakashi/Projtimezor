@@ -27,11 +27,12 @@ class MainWindow(App):
     def __init__(self, parent, **kwargs):
         super(MainWindow, self).__init__(**kwargs)
         self.app = parent
+        self.app.initialize()
         self.screen_manager = ScreenManager()
         self.screens = dict()
 
         self.screens[START_SCREEN] = StartScreen(name='1')
-        self.screens[START_SCREEN].set_parameters(parent=self)
+        self.screens[START_SCREEN].set_parameters(parent=self, groups=self.app.groups())
         self.screen_manager.add_widget(self.screens[START_SCREEN])
 
         self.screens[INITIALIZED_SCREEN] = InitializedScreen(name='2')
@@ -40,8 +41,6 @@ class MainWindow(App):
         self.screens[PROJECT_CREATION_SCREEN] = CreateProjectWindow(name='3')
         self.screens[PROJECT_CREATION_SCREEN].set_parameters(parent=self)
         self.screen_manager.add_widget(self.screens[PROJECT_CREATION_SCREEN])
-
-        self.app.initialize()
 
     def build(self):
         return self.screen_manager
@@ -77,6 +76,9 @@ class MainWindow(App):
         )
         self.screen_manager.switch_to(self.screens[INITIALIZED_SCREEN])
         self.resume() if project else self.app.pause()
+
+    def set_group_filter(self, group):
+        self.app.set_group_filter(group)
 
     def pause(self, instance=None):
         self.app.pause()
