@@ -29,14 +29,20 @@ class MainApp:
     def get_data(self):
         return self.provider.load_data()
 
+    def get_projects(self, group):
+        return self.manager.get_projects(group)
+
     def get_project(self):
         return self.manager.get_project()
 
     def groups(self):
         return self.manager.groups_list
 
+    def set_project_filter(self, project):
+        self.manager.set_project(project)
+
     def set_group_filter(self, group):
-        self.manager.set_group(group)
+        self.manager.set_grpoup(group)
 
     def get_step(self):
         return self.manager.get_step()

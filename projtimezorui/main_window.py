@@ -77,6 +77,12 @@ class MainWindow(App):
         self.screen_manager.switch_to(self.screens[INITIALIZED_SCREEN])
         self.resume() if project else self.app.pause()
 
+    def get_projects(self, group):
+        return self.app.get_projects(group)
+
+    def set_project_filter(self, project):
+        self.app.set_project_filter(project)
+
     def set_group_filter(self, group):
         self.app.set_group_filter(group)
 
