@@ -42,7 +42,7 @@ class MainApp:
         self.manager.set_project(project)
 
     def set_group_filter(self, group):
-        self.manager.set_grpoup(group)
+        self.manager.set_group(group)
 
     def get_step(self):
         return self.manager.get_step()
